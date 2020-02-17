@@ -1,0 +1,17 @@
+{
+  "extends": [
+    "react-app",
+    "plugin:cypress/recommended"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.test.js",
+        "*.spec.js"
+      ],
+      "rules": {
+        "no-unused-expressions": "off"
+      }
+    }
+  ]
+}
