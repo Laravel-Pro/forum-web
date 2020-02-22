@@ -39,7 +39,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: ls -lah
-        working-directory: ./docker
       - name: Download artifact
         uses: actions/download-artifact@v1
         with:
