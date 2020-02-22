@@ -1,9 +1,10 @@
-name: Test
+name: build
 
 on: [push]
 
 jobs:
-  Test:
+  test-build:
+    name: Test & Build
 
     runs-on: ubuntu-latest
 
@@ -12,11 +13,40 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12
-    - run: yarn install --frozen-lockfile
-    - run: yarn test
+    - name: Install Dependencies
+      run: yarn install --frozen-lockfile
+    - name: Unit Test
+      run: yarn test
       env:
         CI: true
-    - name: Cypress run
+    - name: End-to-End Test
       uses: cypress-io/github-action@v1
       with:
         start: yarn start
+
+    - name: Build
+      run: yarn build
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: build
+        path: build
+
+  build-image:
+    name: Build Image
+    needs: tests
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v1
+        working-directory: ./docker
+        with:
+          name: build
+      - name: Publish Docker
+        working-directory: ./docker
+        run: |
+          echo ${{ github.token }} | docker login -u ${{ github.actor }} --password-stdin docker.pkg.github.com
+          IMAGE_NAME="docker.pkg.github.com/laravel-pro/forum-web/pro-web:$(date +%Y%m%d%H%M%S)"
+          docker build -t $IMAGE_NAME .
+          docker push $IMAGE_NAME
