@@ -43,6 +43,8 @@ jobs:
         with:
           name: build
           path: docker
+      - run: ls -lah
+        working-directory: ./docker
       - name: Publish Docker
         working-directory: ./docker
         run: |
