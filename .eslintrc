@@ -13,5 +13,9 @@
         "no-unused-expressions": "off"
       }
     }
-  ]
+  ],
+  "globals": {
+    "provider": true,
+    "jasmine": true
+  }
 }
