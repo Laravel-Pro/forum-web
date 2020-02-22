@@ -40,9 +40,9 @@ jobs:
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v1
-        working-directory: ./docker
         with:
           name: build
+          path：docker/build
       - name: Publish Docker
         working-directory: ./docker
         run: |
