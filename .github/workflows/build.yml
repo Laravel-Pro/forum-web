@@ -42,7 +42,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: build
-          path：docker/build
+          path: docker/build
       - name: Publish Docker
         working-directory: ./docker
         run: |
