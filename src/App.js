@@ -1,26 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Badge, Navbar } from 'react-bootstrap';
+import './theme.scss';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      version: '',
+    }
+  }
+
+  componentDidMount() {
+    fetch('api/version').then(resp => {
+      resp.json().then(body => {
+        this.setState({ version: body.version });
+      })
+    })
+  }
+
+  render() {
+    const { version } = this.state;
+    return (
+      <div className="App">
+        <Navbar bg="light" expand="lg">
+          <Navbar.Brand href="/">Laravel Pro</Navbar.Brand>
+          <Badge variant="dark">{version}</Badge>
+        </Navbar>
+      </div>
+    );
+  }
 }
 
 export default App;
