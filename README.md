@@ -8,6 +8,8 @@
 
 ```
 yarn install
+
+cp .env.example .env
 ```
 
 #### 单元测试
