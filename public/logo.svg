@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400px" height="400px" viewBox="0 0 400 400" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>laravel-pro</title>
+    <desc>Created with Sketch.</desc>
+    <g id="laravel-pro" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle id="椭圆形" fill="#FF2D20" cx="200" cy="200" r="186"></circle>
+        <g id="编组" transform="translate(124.000000, 50.000000)" fill="#FFFFFF" fill-rule="nonzero">
+            <polygon id="L" points="0 184.5 0 0.25 29 0.25 29 160 107 160 107 184.5"></polygon>
+            <path d="M85,297.998113 L85,67.8 L140.75,67.8 C181.75,67.8 211,82.05 211,123.55 C211,163.8 181.75,182.3 141.75,182.3 L114,182.3 L114,297.998113 L85,297.998113 Z M114,160.05 L139,160.05 C168.5,160.05 182.5,148.8 182.5,124.55 C182.5,100.3 167.25,92.3 138,92.3 L114,92.3 L114,160.05 Z" id="P"></path>
+        </g>
+    </g>
+</svg>
