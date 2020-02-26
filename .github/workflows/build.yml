@@ -61,6 +61,7 @@ jobs:
           host: ${{ secrets.dev_server_host }}
           username: root
           key: ${{ secrets.dev_server_key }}
+          envs: IMAGE_TAG
           script: |
             cd ~/laravel-pro
             sed -i "s#docker.pkg.github.com/laravel-pro/forum-web/pro-web:[0-9]*#$IMAGE_TAG#g" docker-compose.yml
