@@ -5,7 +5,7 @@ global.provider = new Pact({
   port: 8991,
   consumer: 'TodoApp',
   provider: 'TodoService',
-  log: path.resolve(process.cwd(), 'logs', 'pact.log'),
+  log: path.resolve(process.cwd(), 'pact.log'),
   dir: path.resolve(process.cwd(), 'pacts'),
   logLevel: 'info',
 })
