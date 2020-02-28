@@ -76,7 +76,7 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "lint": "eslint src",
-    "test:pact": "CI=true node scripts/test.js -c jest.pact.config.js",
+    "test:pact": "CI=true node scripts/test.js --runInBand -c jest.pact.config.js",
     "test:e2e": "cypress run",
     "publish:pact": "node scripts/publish-pact.js"
   },
