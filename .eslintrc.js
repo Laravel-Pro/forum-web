@@ -20,6 +20,7 @@ module.exports = {
   rules: {
     'import/prefer-default-export': 'off',
   },
+  ignorePatterns: ['/config/*.js', '/scripts/*.js'],
   settings: {
     'import/resolver': {
       node: {
