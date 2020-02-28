@@ -3,27 +3,27 @@ import { Badge, Navbar } from 'react-bootstrap';
 import './theme.scss';
 
 class App extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       version: '',
       db: '',
-    }
+    };
   }
 
   componentDidMount() {
-    fetch('api/status/version').then(resp => {
-      resp.json().then(body => {
+    fetch('api/status/version').then((resp) => {
+      resp.json().then((body) => {
         this.setState({ version: body.version });
-      })
-    })
+      });
+    });
 
-    fetch('api/status/db').then(resp => {
-      resp.json().then(body => {
+    fetch('api/status/db').then((resp) => {
+      resp.json().then((body) => {
         this.setState({ db: body.db });
-      })
-    })
+      });
+    });
   }
 
   render() {

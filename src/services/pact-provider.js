@@ -1,5 +1,5 @@
 import { Pact } from '@pact-foundation/pact';
-import path from "path";
+import path from 'path';
 
 export const provider = new Pact({
   consumer: 'forum-web',

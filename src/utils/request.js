@@ -33,10 +33,9 @@ export default function request(url, options) {
   const resolvedUrl = (new URL(url, baseURL)).href;
 
   return fetch(resolvedUrl, newOptions)
-    .then((response) => {
-      return response.json();
-    })
+    .then((response) => response.json())
     .catch((e) => {
+      // eslint-disable-next-line no-console
       console.error(e);
     });
 }

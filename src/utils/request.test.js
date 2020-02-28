@@ -10,7 +10,7 @@ describe('request', () => {
   });
 
   it('should stringify as json when request body is not FormData', async () => {
-    const body = {foo: 'bar'};
+    const body = { foo: 'bar' };
     global.fetch = jest.fn().mockImplementation(async (url, options) => {
       expect(options.body).toBe(JSON.stringify(body));
       return new Response(JSON.stringify(body));
@@ -18,7 +18,7 @@ describe('request', () => {
 
     await request('/', {
       method: 'POST',
-      body: body,
+      body,
     });
   });
-})
+});

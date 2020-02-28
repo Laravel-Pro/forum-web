@@ -15,9 +15,7 @@ describe('channels', () => {
     await provider.verify();
   });
 
-  afterAll(async () => {
-    return provider.finalize();
-  });
+  afterAll(async () => provider.finalize());
 
   it('channels exists', async () => {
     await provider.addInteraction({
@@ -34,7 +32,7 @@ describe('channels', () => {
         headers: { 'Content-Type': 'application/json' },
         body: EXPECTED_CHANNELS,
       },
-    })
+    });
 
     const data = await getChannels();
     expect(data).toBeInstanceOf(Array);
@@ -56,10 +54,9 @@ describe('channels', () => {
         headers: { 'Content-Type': 'application/json' },
         body: [],
       },
-    })
+    });
 
     const data = await getChannels();
     expect(data).toEqual([]);
   });
 });
-
