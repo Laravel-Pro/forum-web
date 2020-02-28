@@ -19,6 +19,10 @@ jobs:
       run: yarn test
       env:
         CI: true
+    - name: Pact Test
+      run: yarn test:pact
+      env:
+        CI: true
     - name: End-to-End Test
       uses: cypress-io/github-action@v1
       with:
