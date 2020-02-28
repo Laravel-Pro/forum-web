@@ -1,0 +1,112 @@
+{
+  "consumer": {
+    "name": "forum-web"
+  },
+  "provider": {
+    "name": "forum-server"
+  },
+  "interactions": [
+    {
+      "description": "get all channels",
+      "providerState": "channels exists",
+      "request": {
+        "method": "GET",
+        "path": "/channels",
+        "headers": {
+          "Accept": "application/json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": [
+          {
+            "id": 1,
+            "name": "Help"
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "min": 1
+          },
+          "$.body[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request for projects",
+      "providerState": "i have a list of projects",
+      "request": {
+        "method": "GET",
+        "path": "/projects",
+        "headers": {
+          "Accept": "application/json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": [
+          {
+            "id": 1,
+            "name": "Project 1",
+            "due": "2016-02-11T09:46:56.023Z",
+            "tasks": [
+              {
+                "id": 1,
+                "name": "Do the laundry",
+                "done": true
+              },
+              {
+                "id": 2,
+                "name": "Do the dishes",
+                "done": false
+              },
+              {
+                "id": 3,
+                "name": "Do the backyard",
+                "done": false
+              },
+              {
+                "id": 4,
+                "name": "Do nothing",
+                "done": false
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "description": "get empty array",
+      "providerState": "no channels exists",
+      "request": {
+        "method": "GET",
+        "path": "/channels",
+        "headers": {
+          "Accept": "application/json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": [
+
+        ]
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}
