@@ -22,6 +22,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:pact": "CI=true react-scripts test \"/*.pact.spec.js$\"",
     "test:e2e": "cypress run",
     "eject": "react-scripts eject"
   },
