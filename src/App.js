@@ -1,5 +1,7 @@
 import React from 'react';
 import { Badge, Navbar } from 'react-bootstrap';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Home from 'pages/Home';
 import './theme.scss';
 
 class App extends React.Component {
@@ -35,6 +37,14 @@ class App extends React.Component {
           <Badge variant="dark">Ver: {version}</Badge>
           <Badge variant="dark" className="ml-1">DB: {db}</Badge>
         </Navbar>
+
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </Router>
       </div>
     );
   }
