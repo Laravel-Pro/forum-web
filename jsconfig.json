@@ -1,7 +1,8 @@
 {
   "include": [
     "./node_modules/cypress",
-    "cypress/**/*.js"
+    "cypress/**/*.js",
+    "src"
   ],
   "compilerOptions": {
     "baseUrl": "src"
