@@ -1,9 +1,9 @@
 import { provider } from 'services/pact-provider';
 import { eachLike } from '@pact-foundation/pact/dsl/matchers';
+import { setBaseURL } from 'utils/request';
 import { getChannels } from './channel';
-import { setBaseURL } from '../utils/request';
 
-const EXPECTED_CHANNELS = eachLike({ id: 1, name: 'Help' });
+const EXPECTED_CHANNELS = eachLike({ id: 1, name: 'Help', slug: 'help' });
 
 describe('channels', () => {
   beforeAll(async () => {
@@ -37,6 +37,7 @@ describe('channels', () => {
     const data = await getChannels();
     expect(data).toBeInstanceOf(Array);
     expect(data).toHaveProperty([0, 'name']);
+    expect(data).toHaveProperty([0, 'slug']);
   });
 
   it('no channels exists', async () => {
