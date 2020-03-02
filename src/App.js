@@ -2,6 +2,7 @@ import React from 'react';
 import { Badge, Navbar } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from 'pages/Home';
+import { getDBStatus, getVersion } from 'services/status';
 import './theme.scss';
 
 class App extends React.Component {
@@ -15,16 +16,12 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    fetch('api/status/version').then((resp) => {
-      resp.json().then((body) => {
-        this.setState({ version: body.version });
-      });
+    getVersion().then(({ version }) => {
+      this.setState({ version });
     });
 
-    fetch('api/status/db').then((resp) => {
-      resp.json().then((body) => {
-        this.setState({ db: body.db });
-      });
+    getDBStatus().then(({ db }) => {
+      this.setState({ db });
     });
   }
 
