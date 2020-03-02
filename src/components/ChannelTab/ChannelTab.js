@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Nav } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 class ChannelTab extends Component {
   render() {
@@ -8,11 +9,15 @@ class ChannelTab extends Component {
     return (
       <Nav variant="tabs" defaultActiveKey="/">
         <Nav.Item>
-          <Nav.Link href="/">全部</Nav.Link>
+          <LinkContainer to="/channel/all">
+            <Nav.Link>全部</Nav.Link>
+          </LinkContainer>
         </Nav.Item>
         { channels.map((ch) => (
           <Nav.Item key={ch.slug}>
-            <Nav.Link href={`/${ch.slug}`}>{ch.name}</Nav.Link>
+            <LinkContainer to={`/channel/${ch.slug}`}>
+              <Nav.Link>{ch.name}</Nav.Link>
+            </LinkContainer>
           </Nav.Item>
         ))}
       </Nav>
