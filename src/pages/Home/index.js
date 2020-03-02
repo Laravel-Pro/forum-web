@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ChannelTab } from 'components';
 import Container from 'react-bootstrap/Container';
+import { getChannels } from 'services/channel';
 
 class Home extends Component {
   constructor(props) {
@@ -8,6 +9,16 @@ class Home extends Component {
     this.state = {
       channels: [],
     };
+  }
+
+  componentDidMount() {
+    this.fetchChannels();
+  }
+
+
+  fetchChannels = async () => {
+    const channels = await getChannels();
+    this.setState({ channels });
   }
 
   render() {
