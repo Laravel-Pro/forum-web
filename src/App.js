@@ -1,6 +1,8 @@
 import React from 'react';
 import { Badge, Navbar } from 'react-bootstrap';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router, Redirect, Route, Switch,
+} from 'react-router-dom';
 import Home from 'pages/Home';
 import { getDBStatus, getVersion } from 'services/status';
 import './theme.scss';
@@ -37,8 +39,11 @@ class App extends React.Component {
 
         <Router>
           <Switch>
-            <Route exact path="/">
+            <Route path="/channel/:channel">
               <Home />
+            </Route>
+            <Route path="*">
+              <Redirect to="/channel/all" />
             </Route>
           </Switch>
         </Router>
