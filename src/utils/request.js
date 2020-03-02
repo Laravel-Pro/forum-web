@@ -1,8 +1,14 @@
-let baseURL = window ? window.location.href : '';
+let baseURL = window ? `${window.location.origin}/api` : '';
 
 // for pact test
 export function setBaseURL(url) {
   baseURL = url;
+}
+
+function combineURLs(base, relative) {
+  return relative
+    ? `${base.replace(/\/+$/, '')}/${relative.replace(/^\/+/, '')}`
+    : baseURL;
 }
 
 export default function request(url, options) {
@@ -30,7 +36,7 @@ export default function request(url, options) {
     }
   }
 
-  const resolvedUrl = (new URL(url, baseURL)).href;
+  const resolvedUrl = combineURLs(baseURL, url);
 
   return fetch(resolvedUrl, newOptions)
     .then((response) => response.json())
