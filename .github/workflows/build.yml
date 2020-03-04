@@ -19,14 +19,16 @@ jobs:
       run: yarn test
       env:
         CI: true
+
     - name: Pact Test
       run: yarn test:pact
       env:
         CI: true
+
+    - name: Start API Server
+      run: docker-compose -f docker-compose-e2e.yml up --force-recreate --renew-anon-volumes
     - name: End-to-End Test
-      run: |
-        docker-compose -f docker-compose-e2e.yml up --force-recreate --renew-anon-volumes 2>&1 &
-        yarn test:e2e
+      run: yarn test:e2e
       env:
         CI: true
 
