@@ -24,9 +24,11 @@ jobs:
       env:
         CI: true
     - name: End-to-End Test
-      uses: cypress-io/github-action@v1
-      with:
-        start: yarn start
+      run: |
+        docker-compose -f docker-compose-e2e.yml up --force-recreate --renew-anon-volumes &
+        yarn test:e2e
+      env:
+        CI: true
 
     - name: Build
       run: yarn build
