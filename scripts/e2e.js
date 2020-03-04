@@ -14,6 +14,7 @@ process.on('unhandledRejection', err => {
 });
 
 const spawn = require('child_process').spawn;
+const waitOn = require('wait-on');
 
 // Ensure environment variables are read.
 require('../config/env');
@@ -29,31 +30,45 @@ devServer.on('exit', (code, signal) => {
   console.log(`dev server exited with code ${code} and signal ${signal}`);
 })
 
-let argv = process.argv.slice(2);
+const { API_PROXY } = process.env;
 
-let cypress;
+waitOn({
+  resources: [
+    `${API_PROXY}/api/status/version`,
+  ],
+  delay: 5000,
+  interval: 1000,
+  timeout: 120000, // 2 minutes
+}).then(() => {
+  let argv = process.argv.slice(2);
 
-if (
-  !process.env.CI &&
-  argv.length
-) {
-  console.log(argv);
-  cypress = spawn('yarn', ['cypress', ...argv], spawnOptions);
-} else {
-  cypress = spawn('yarn', ['cypress', 'run'], spawnOptions);
-}
+  let cypress;
 
-cypress.on('exit', (code, signal) => {
-  console.log(`cypress exited with code ${code} and signal ${signal}`);
-  if (devServer.exitCode === null) {
-    console.log('killing devServer');
-    devServer.kill();
+  if (
+    !process.env.CI &&
+    argv.length
+  ) {
+    console.log(argv);
+    cypress = spawn('yarn', ['cypress', ...argv], spawnOptions);
+  } else {
+    cypress = spawn('yarn', ['cypress', 'run'], spawnOptions);
   }
-  let times = 0;
-  setInterval(() => {
-    if (devServer.killed || times > 10) {
-      process.exit(code);
+
+  cypress.on('exit', (code, signal) => {
+    console.log(`cypress exited with code ${code} and signal ${signal}`);
+    if (devServer.exitCode === null) {
+      console.log('killing devServer');
+      devServer.kill();
     }
-    times += 1;
-  }, 500);
+    let times = 0;
+    setInterval(() => {
+      if (devServer.killed || times > 10) {
+        process.exit(code);
+      }
+      times += 1;
+    }, 500);
+  })
+}).catch((e) => {
+  console.error(e);
+  process.exit(1);
 })
