@@ -3,7 +3,6 @@ version: "3"
 services:
   pro-server:
     image: docker.pkg.github.com/laravel-pro/forum-server/pro-server:latest
-    env_file: .env
     ports:
       - "8000:80"
     depends_on:
