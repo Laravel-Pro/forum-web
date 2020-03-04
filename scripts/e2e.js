@@ -39,6 +39,7 @@ waitOn({
   delay: 5000,
   interval: 1000,
   timeout: 120000, // 2 minutes
+  verbose: true,
 }).then(() => {
   let argv = process.argv.slice(2);
 
