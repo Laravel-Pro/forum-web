@@ -82,7 +82,7 @@
     "test": "node scripts/test.js",
     "lint": "eslint src",
     "test:pact": "CI=true node scripts/test.js --runInBand -c jest.pact.config.js",
-    "test:e2e": "cypress run",
+    "test:e2e": "node scripts/e2e.js",
     "publish:pact": "node scripts/publish-pact.js"
   },
   "browserslist": {

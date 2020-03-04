@@ -8,6 +8,8 @@ const paths = require('./paths');
 delete require.cache[require.resolve('./paths')];
 
 const NODE_ENV = process.env.NODE_ENV;
+const E2E_TEST = process.env.E2E_TEST;
+
 if (!NODE_ENV) {
   throw new Error(
     'The NODE_ENV environment variable is required but was not specified.'
@@ -16,12 +18,15 @@ if (!NODE_ENV) {
 
 // https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use
 const dotenvFiles = [
+  // if running e2e test, load e2e env first
+  E2E_TEST && `${paths.dotenv}.e2e`,
+
   `${paths.dotenv}.${NODE_ENV}.local`,
   `${paths.dotenv}.${NODE_ENV}`,
   // Don't include `.env.local` for `test` environment
   // since normally you expect tests to produce the same
   // results for everyone
-  NODE_ENV !== 'test' && `${paths.dotenv}.local`,
+  NODE_ENV !== 'test' && !E2E_TEST && `${paths.dotenv}.local`,
   paths.dotenv,
 ].filter(Boolean);
 
