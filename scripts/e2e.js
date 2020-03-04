@@ -52,7 +52,7 @@ cypress.on('exit', (code, signal) => {
   let times = 0;
   setInterval(() => {
     if (devServer.killed || times > 10) {
-      process.exit();
+      process.exit(code);
     }
     times += 1;
   }, 500);
