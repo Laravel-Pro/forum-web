@@ -20,7 +20,7 @@ module.exports = {
   rules: {
     'import/prefer-default-export': 'off',
   },
-  ignorePatterns: ['/config/*.js', '/scripts/*.js'],
+  ignorePatterns: ['/config/*.js', '/scripts/*.js', '/cypress/plugins/*.js'],
   settings: {
     'import/resolver': {
       node: {
