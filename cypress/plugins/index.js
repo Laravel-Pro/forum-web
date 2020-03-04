@@ -1,4 +1,4 @@
-/// <reference types="cypress" />
+/// <reference types="cypress,sequelize" />
 // ***********************************************************
 // This example plugins/index.js can be used to load plugins
 //
@@ -11,6 +11,8 @@
 
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
+
+require('./seed');
 
 /**
  * @type {Cypress.PluginConfig}
