@@ -24,7 +24,8 @@
         "body": [
           {
             "id": 1,
-            "name": "Help"
+            "name": "Help",
+            "slug": "help"
           }
         ],
         "matchingRules": {
@@ -55,6 +56,217 @@
         "body": [
 
         ]
+      }
+    },
+    {
+      "description": "user info after registry",
+      "providerState": "username and email can be used",
+      "request": {
+        "method": "POST",
+        "path": "/auth/register",
+        "headers": {
+          "Accept": "application/json"
+        },
+        "body": {
+          "username": "aUser",
+          "email": "a-user@laravel.pro",
+          "password": "secret-password"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          },
+          "$.body.email": {
+            "match": "regex",
+            "regex": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "id": 1,
+          "username": "aUser",
+          "email": "a-user@laravel.pro"
+        },
+        "matchingRules": {
+          "$.body.id": {
+            "match": "type"
+          },
+          "$.body.email": {
+            "match": "regex",
+            "regex": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
+          }
+        }
+      }
+    },
+    {
+      "description": "exception of username already exists",
+      "providerState": "username \"aUser\" already exists",
+      "request": {
+        "method": "POST",
+        "path": "/auth/register",
+        "headers": {
+          "Accept": "application/json"
+        },
+        "body": {
+          "username": "aUser",
+          "email": "a-user@laravel.pro",
+          "password": "secret-password"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      },
+      "response": {
+        "status": 422,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "message": "The given data was invalid.",
+          "errors": {
+            "username": [
+              [
+                "The username has already been taken."
+              ]
+            ]
+          }
+        },
+        "matchingRules": {
+          "$.body.message": {
+            "match": "type"
+          },
+          "$.body.errors.username": {
+            "min": 1
+          },
+          "$.body.errors.username[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "exception of email already exists",
+      "providerState": "email \"a-user@laravel.pro\" already exists",
+      "request": {
+        "method": "POST",
+        "path": "/auth/register",
+        "headers": {
+          "Accept": "application/json"
+        },
+        "body": {
+          "username": "aUser",
+          "email": "a-user@laravel.pro",
+          "password": "secret-password"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      },
+      "response": {
+        "status": 422,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "message": "The given data was invalid.",
+          "errors": {
+            "email": [
+              [
+                "The email has already been taken."
+              ]
+            ]
+          }
+        },
+        "matchingRules": {
+          "$.body.message": {
+            "match": "type"
+          },
+          "$.body.errors.email": {
+            "min": 1
+          },
+          "$.body.errors.email[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "The given data was invalid",
+      "providerState": "registration information is invalid",
+      "request": {
+        "method": "POST",
+        "path": "/auth/register",
+        "headers": {
+          "Accept": "application/json"
+        },
+        "body": {
+          "username": "",
+          "email": "this-is-a-email",
+          "password": "secret"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      },
+      "response": {
+        "status": 422,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "message": "The given data was invalid.",
+          "errors": {
+            "username": [
+              [
+                "The username field is required."
+              ]
+            ],
+            "email": [
+              [
+                "The email must be a valid email address."
+              ]
+            ],
+            "password": [
+              [
+                "The password must be at least 8 characters."
+              ]
+            ]
+          }
+        },
+        "matchingRules": {
+          "$.body.message": {
+            "match": "type"
+          },
+          "$.body.errors.username": {
+            "min": 1
+          },
+          "$.body.errors.username[*].*": {
+            "match": "type"
+          },
+          "$.body.errors.email": {
+            "min": 1
+          },
+          "$.body.errors.email[*].*": {
+            "match": "type"
+          },
+          "$.body.errors.password": {
+            "min": 1
+          },
+          "$.body.errors.password[*].*": {
+            "match": "type"
+          }
+        }
       }
     }
   ],
