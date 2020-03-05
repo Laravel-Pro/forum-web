@@ -33,8 +33,14 @@ class App extends React.Component {
       <div className="App">
         <Navbar bg="light" expand="lg">
           <Navbar.Brand href="/">Laravel Pro</Navbar.Brand>
-          <Badge variant="dark">Ver: {version}</Badge>
-          <Badge variant="dark" className="ml-1">DB: {db}</Badge>
+          <Badge variant="dark">
+            Ver:
+            {version}
+          </Badge>
+          <Badge variant="dark" className="ml-1">
+            DB:
+            {db}
+          </Badge>
         </Navbar>
 
         <Router>
