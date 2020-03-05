@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
   extends: [
     'react-app',
-    'airbnb-base',
+    'airbnb',
     'plugin:cypress/recommended'
   ],
   overrides: [
@@ -19,6 +19,7 @@ module.exports = {
   ],
   rules: {
     'import/prefer-default-export': 'off',
+    'react/jsx-filename-extension': ['error', { 'extensions': ['.js', '.jsx'] }]
   },
   ignorePatterns: ['/config/*.js', '/scripts/*.js', '/cypress/plugins/*.js'],
   settings: {
