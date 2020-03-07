@@ -3,7 +3,7 @@ import {
   like, extractPayload, email, eachLike,
 } from '@pact-foundation/pact/dsl/matchers';
 import { setBaseURL } from 'utils/request';
-import { registryUser } from './auth';
+import { registerUser } from './auth';
 
 const testUsername = 'aUser';
 const testEmail = 'a-user@laravel.pro';
@@ -41,7 +41,7 @@ describe('auth', () => {
       },
     });
 
-    const userInfo = await registryUser(extractPayload(userData));
+    const userInfo = await registerUser(extractPayload(userData));
     expect(userInfo).toMatchObject(extractPayload(registryResult));
     expect(userInfo).toHaveProperty('id');
     expect(userInfo).toHaveProperty('username');
@@ -70,7 +70,7 @@ describe('auth', () => {
       },
     });
 
-    const response = await registryUser(extractPayload(userData));
+    const response = await registerUser(extractPayload(userData));
     expect(response).toHaveProperty('message');
     expect(response).toHaveProperty(['errors', 'username']);
   });
@@ -97,7 +97,7 @@ describe('auth', () => {
       },
     });
 
-    const response = await registryUser(extractPayload(userData));
+    const response = await registerUser(extractPayload(userData));
     expect(response).toHaveProperty('message');
     expect(response).toHaveProperty(['errors', 'email']);
   });
@@ -130,7 +130,7 @@ describe('auth', () => {
       },
     });
 
-    const response = await registryUser(extractPayload(userData));
+    const response = await registerUser(extractPayload(userData));
     expect(response).toHaveProperty('message');
     expect(response).toHaveProperty(['errors', 'username']);
     expect(response).toHaveProperty(['errors', 'email']);

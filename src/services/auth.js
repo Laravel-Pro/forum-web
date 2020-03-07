@@ -1,6 +1,6 @@
 import request from 'utils/request';
 
-export async function registryUser({ username = '', email = '', password = '' }) {
+export async function registerUser({ username = '', email = '', password = '' }) {
   return request('/auth/register', {
     method: 'POST',
     body: {
