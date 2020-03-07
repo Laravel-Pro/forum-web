@@ -4,6 +4,7 @@ import {
   BrowserRouter as Router, Redirect, Route, Switch,
 } from 'react-router-dom';
 import Home from 'pages/Home';
+import Register from 'pages/Auth/Register';
 import { getDBStatus, getVersion } from 'services/status';
 import './theme.scss';
 
@@ -47,6 +48,9 @@ class App extends React.Component {
           <Switch>
             <Route path="/channel/:channel">
               <Home />
+            </Route>
+            <Route path="/auth/register">
+              <Register />
             </Route>
             <Route path="*">
               <Redirect to="/channel/all" />
