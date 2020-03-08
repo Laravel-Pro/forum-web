@@ -20,11 +20,6 @@ jobs:
       env:
         CI: true
 
-    - name: Pact Test
-      run: yarn test:pact
-      env:
-        CI: true
-
     - name: Start API Server
       run: |
         echo ${{ github.token }} | docker login -u ${{ github.actor }} --password-stdin docker.pkg.github.com
