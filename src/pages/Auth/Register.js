@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import {
-  Col, Row,
-  Form, FormControl, FormGroup, FormLabel, Button,
+  Button, Col, Form, FormControl,
+  FormGroup, FormLabel, Row,
 } from 'react-bootstrap';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import { registerUser } from 'services/auth';
+import UserContext from 'UserContext';
 import styles from './Register.module.scss';
 
 const schema = yup.object({
@@ -49,8 +50,10 @@ class Register extends Component {
   submit = async (values) => {
     const { username, email, password } = values;
     const resp = await registerUser({ username, email, password });
+    const { updateUser } = this.context;
     if (resp.username === username) {
       this.setState({ registerSuccess: true });
+      updateUser(resp);
     }
   }
 
@@ -151,5 +154,7 @@ class Register extends Component {
     );
   }
 }
+
+Register.contextType = UserContext;
 
 export default Register;
