@@ -12,7 +12,9 @@ function combineURLs(base, relative) {
 }
 
 export default async function request(url, options) {
-  const defaultOptions = {};
+  const defaultOptions = {
+    credentials: 'include',
+  };
   const newOptions = {
     ...defaultOptions,
     ...options,
