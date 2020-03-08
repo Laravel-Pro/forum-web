@@ -1,63 +1,52 @@
 import React from 'react';
-import { Badge, Navbar } from 'react-bootstrap';
-import {
-  BrowserRouter as Router, Redirect, Route, Switch,
-} from 'react-router-dom';
-import Home from 'pages/Home';
-import Register from 'pages/Auth/Register';
-import { getDBStatus, getVersion } from 'services/status';
+import UserContext from 'UserContext';
+import BasicLayout from 'pages/BasicLayout';
 import './theme.scss';
+import { getSelf } from 'services/user';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      version: '',
-      db: '',
+      userContextValue: {
+        user: {},
+        updateUser: this.updateUser,
+      },
     };
   }
 
   componentDidMount() {
-    getVersion().then(({ version }) => {
-      this.setState({ version });
-    });
+    this.getUserSelf();
+  }
 
-    getDBStatus().then(({ db }) => {
-      this.setState({ db });
+  getUserSelf = async () => {
+    try {
+      const user = await getSelf();
+      this.updateUser(user);
+    } catch (resp) {
+      if (resp.status === 401) {
+        // TODO 未登录
+      }
+    }
+  }
+
+
+  updateUser = (user) => {
+    this.setState({
+      userContextValue: {
+        user,
+        updateUser: this.updateUser,
+      },
     });
   }
 
   render() {
-    const { version, db } = this.state;
+    const { userContextValue } = this.state;
     return (
-      <div className="App">
-        <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="/">Laravel Pro</Navbar.Brand>
-          <Badge variant="dark">
-            Ver:
-            {version}
-          </Badge>
-          <Badge variant="dark" className="ml-1">
-            DB:
-            {db}
-          </Badge>
-        </Navbar>
-
-        <Router>
-          <Switch>
-            <Route path="/channel/:channel">
-              <Home />
-            </Route>
-            <Route path="/auth/register">
-              <Register />
-            </Route>
-            <Route path="*">
-              <Redirect to="/channel/all" />
-            </Route>
-          </Switch>
-        </Router>
-      </div>
+      <UserContext.Provider value={userContextValue}>
+        <BasicLayout />
+      </UserContext.Provider>
     );
   }
 }
