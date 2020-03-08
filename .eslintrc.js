@@ -19,7 +19,9 @@ module.exports = {
   ],
   rules: {
     'import/prefer-default-export': 'off',
-    'react/jsx-filename-extension': ['error', { 'extensions': ['.js', '.jsx'] }]
+    'react/jsx-filename-extension': ['error', { 'extensions': ['.js', '.jsx'] }],
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/interactive-supports-focus': 'off',
   },
   ignorePatterns: ['/config/*.js', '/scripts/*.js', '/cypress/plugins/*.js'],
   settings: {
