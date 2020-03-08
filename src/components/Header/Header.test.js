@@ -11,6 +11,6 @@ it('should show Laravel Pro', () => {
 it('should have extra content', () => {
   const extraContent = 'here is extra';
   const { getByText } = render(<Header extra={extraContent} />);
-  const extra = getByText(RegExp(extraContent));
+  const extra = getByText(extraContent);
   expect(extra).toBeInTheDocument();
 });
