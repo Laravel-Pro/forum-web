@@ -8,6 +8,7 @@ services:
     depends_on:
       - "mysql-server"
     environment:
+      APP_KEY: base64:7cDVuHM4uKo+aDr+9+PCw9ve3+WsSwaT5q0AlLynUyI=
       APP_DEBUG: "true"
       DB_CONNECTION: mysql
       DB_HOST: mysql-server
