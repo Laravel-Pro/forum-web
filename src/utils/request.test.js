@@ -2,7 +2,9 @@ import request from 'utils/request';
 
 describe('request', () => {
   it('should parse json response body', async () => {
-    global.fetch = jest.fn().mockImplementation(() => Promise.resolve(new Response('{"foo":"bar"}')));
+    const response = new Response('{"foo":"bar"}');
+    response.headers.set('Content-Type', 'application/json');
+    global.fetch = jest.fn().mockImplementation(() => Promise.resolve(response));
 
     const data = await request('/');
 

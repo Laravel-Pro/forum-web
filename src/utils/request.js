@@ -11,7 +11,7 @@ function combineURLs(base, relative) {
     : baseURL;
 }
 
-export default function request(url, options) {
+export default async function request(url, options) {
   const defaultOptions = {};
   const newOptions = {
     ...defaultOptions,
@@ -38,10 +38,24 @@ export default function request(url, options) {
 
   const resolvedUrl = combineURLs(baseURL, url);
 
-  return fetch(resolvedUrl, newOptions)
-    .then((response) => response.json())
-    .catch((e) => {
-      // eslint-disable-next-line no-console
-      console.error(e);
-    });
+  const resp = await fetch(resolvedUrl, newOptions);
+
+  let content;
+
+  const contentType = resp.headers.get('Content-Type');
+  if (contentType) {
+    if (contentType.indexOf('json') !== -1) {
+      content = await resp.json();
+    } else if (contentType.indexOf('text') !== -1) {
+      content = await resp.text();
+    } else {
+      content = await resp.blob();
+    }
+  }
+
+  if (!resp.ok) {
+    throw resp;
+  }
+
+  return content;
 }
