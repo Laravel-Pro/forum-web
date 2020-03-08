@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import {
   BrowserRouter, Redirect, Route, Switch,
 } from 'react-router-dom';
-import { Header } from 'components';
+import { Header, ProfileToggle } from 'components';
 import Home from 'pages/Home';
 import Register from 'pages/Auth/Register';
 import { getDBStatus, getVersion } from 'services/status';
+import UserContext from 'UserContext';
 
 class BasicLayout extends Component {
   constructor(props) {
@@ -32,9 +33,17 @@ class BasicLayout extends Component {
 
     return (
       <div>
-        <Header />
-
         <BrowserRouter>
+
+          <Header
+            extra={(
+              <UserContext.Consumer>
+                {({ user }) => <ProfileToggle user={user} />}
+              </UserContext.Consumer>
+            )}
+          />
+
+
           <Switch>
             <Route path="/channel/:channel">
               <Home />
@@ -47,11 +56,11 @@ class BasicLayout extends Component {
             </Route>
           </Switch>
         </BrowserRouter>
-
         <footer className="text-muted fixed-bottom">
           {`ver: ${version} | db: ${db}`}
         </footer>
       </div>
+
     );
   }
 }
