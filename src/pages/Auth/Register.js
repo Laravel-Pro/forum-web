@@ -43,17 +43,31 @@ class Register extends Component {
         password: '',
         confirm_password: '',
       },
+      usernameError: '',
+      emailError: '',
       registerSuccess: false,
     };
   }
 
   submit = async (values) => {
     const { username, email, password } = values;
-    const resp = await registerUser({ username, email, password });
-    const { updateUser } = this.context;
-    if (resp.username === username) {
-      this.setState({ registerSuccess: true });
-      updateUser(resp);
+    try {
+      const resp = await registerUser({ username, email, password });
+      const { updateUser } = this.context;
+      if (resp.username === username) {
+        this.setState({ registerSuccess: true });
+        updateUser(resp);
+      }
+    } catch (e) {
+      const { body, status } = e;
+      if (status === 422) {
+        const { errors = {} } = body;
+        const { username: usernameErrors, email: emailErrors } = errors;
+        this.setState({
+          usernameError: usernameErrors[0],
+          emailError: emailErrors[0],
+        });
+      }
     }
   }
 
@@ -65,6 +79,14 @@ class Register extends Component {
       touched,
       errors,
     } = props;
+    const { usernameError, emailError } = this.state;
+
+    const usernameInvalid = (touched.username && !!errors.username) || !!usernameError;
+    const usernameErrors = usernameError || errors.username;
+
+    const emailInvalid = (touched.email && !!errors.email) || !!emailError;
+    const emailErrors = emailError || errors.email;
+
     return (
       <Form noValidate onSubmit={handleSubmit}>
         <FormGroup as={Row} controlId="username">
@@ -75,9 +97,9 @@ class Register extends Component {
               placeholder="请输入用户名"
               value={values.username}
               onChange={handleChange}
-              isInvalid={touched.username && !!errors.username}
+              isInvalid={usernameInvalid}
             />
-            <Feedback type="invalid">{errors.username}</Feedback>
+            <Feedback type="invalid">{usernameErrors}</Feedback>
           </Col>
         </FormGroup>
         <FormGroup as={Row} controlId="email">
@@ -88,9 +110,9 @@ class Register extends Component {
               placeholder="请输入邮箱"
               value={values.email}
               onChange={handleChange}
-              isInvalid={touched.email && !!errors.email}
+              isInvalid={emailInvalid}
             />
-            <Feedback type="invalid">{errors.email}</Feedback>
+            <Feedback type="invalid">{emailErrors}</Feedback>
           </Col>
         </FormGroup>
         <FormGroup as={Row} controlId="password">
