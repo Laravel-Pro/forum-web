@@ -56,7 +56,8 @@ export default async function request(url, options) {
   }
 
   if (!resp.ok) {
-    throw resp;
+    // eslint-disable-next-line no-throw-literal
+    throw { body: content, status: resp.status, response: resp };
   }
 
   return content;
