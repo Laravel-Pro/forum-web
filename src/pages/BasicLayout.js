@@ -1,19 +1,21 @@
-import React, { Component } from "react";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import { Header, ProfileToggle } from "components";
-import Home from "pages/Home";
-import Register from "pages/Auth/Register";
-import Login from "pages/Auth/Login";
-import { getDBStatus, getVersion } from "services/status";
-import UserContext from "UserContext";
+import React, { Component } from 'react';
+import {
+  BrowserRouter, Redirect, Route, Switch,
+} from 'react-router-dom';
+import { Header, ProfileToggle } from 'components';
+import Home from 'pages/Home';
+import Register from 'pages/Auth/Register';
+import Login from 'pages/Auth/Login';
+import { getDBStatus, getVersion } from 'services/status';
+import UserContext from 'UserContext';
 
 class BasicLayout extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      version: "",
-      db: ""
+      version: '',
+      db: '',
     };
   }
 
@@ -34,11 +36,11 @@ class BasicLayout extends Component {
       <div>
         <BrowserRouter>
           <Header
-            extra={
+            extra={(
               <UserContext.Consumer>
                 {({ user }) => <ProfileToggle user={user} />}
               </UserContext.Consumer>
-            }
+            )}
           />
 
           <Switch>

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Form,
   FormGroup,
@@ -6,28 +6,32 @@ import {
   FormLabel,
   Col,
   FormControl,
-  Button
-} from "react-bootstrap";
-import * as yup from "yup";
-import { Formik } from "formik";
-import UserContext from "UserContext";
-import { login } from "services/auth";
+  Button,
+} from 'react-bootstrap';
+import * as yup from 'yup';
+import { Formik } from 'formik';
+import UserContext from 'UserContext';
+import { login } from 'services/auth';
 
 const schema = yup.object({
-  loginAs: yup.string().required("请输入用户名"),
-  password: yup.string().required("请输入用密码")
+  loginAs: yup.string().required('请输入用户名'),
+  password: yup.string().required('请输入用密码'),
 });
 
 const { Feedback } = FormControl;
 
 class Login extends React.Component {
-  submit = async values => {
+  submit = async (values) => {
     const { loginAs, password } = values;
+    const { updateUser } = this.context;
     const resp = await login({ loginAs, password });
-    this.context.updateUser(resp);
+    updateUser(resp);
   };
-  renderLoginFrom = props => {
-    const { handleSubmit, handleChange, values, touched, errors } = props;
+
+  renderLoginFrom = (props) => {
+    const {
+      handleSubmit, handleChange, values, touched, errors,
+    } = props;
     return (
       <Form noValidate onSubmit={handleSubmit}>
         <FormGroup as={Row} controlId="loginAs">
@@ -64,11 +68,12 @@ class Login extends React.Component {
       </Form>
     );
   };
+
   render() {
     return (
       <Formik
         validationSchema={schema}
-        initialValues={{ loginAs: "", password: "" }}
+        initialValues={{ loginAs: '', password: '' }}
         onSubmit={this.submit}
       >
         {this.renderLoginFrom}
