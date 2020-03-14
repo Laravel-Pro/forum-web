@@ -41,6 +41,11 @@ function buildURL(url, params) {
   return url + (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
 }
 
+function convertPagination(meta) {
+  const { per_page: perPage, current_page: currentPage, total } = meta;
+  return { perPage, currentPage, total };
+}
+
 export default async function request(url, options) {
   const defaultOptions = {
     credentials: 'include',
@@ -78,6 +83,10 @@ export default async function request(url, options) {
   if (contentType) {
     if (contentType.indexOf('json') !== -1) {
       content = await resp.json();
+      const { meta } = content;
+      if (meta) {
+        content.pagination = convertPagination(meta);
+      }
     } else if (contentType.indexOf('text') !== -1) {
       content = await resp.text();
     } else {
