@@ -11,6 +11,36 @@ function combineURLs(base, relative) {
     : baseURL;
 }
 
+function buildURL(url, params) {
+  if (!params) {
+    return url;
+  }
+
+  let serializedParams = '';
+  if (params instanceof URLSearchParams) {
+    serializedParams = params.toString();
+  } else {
+    const parts = [];
+    Object.keys(params).forEach((key) => {
+      let val = params[key];
+      if (val === null || typeof val === 'undefined') {
+        return;
+      }
+      if (val instanceof Date) {
+        val = val.toISOString();
+      } else if (val instanceof Object) {
+        val = JSON.stringify(val);
+      }
+      parts.push(`${encodeURIComponent(key)}=${encodeURIComponent(val)}`);
+    });
+    if (parts.length === 0) {
+      return url;
+    }
+    serializedParams = parts.join('&');
+  }
+  return url + (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
+}
+
 export default async function request(url, options) {
   const defaultOptions = {
     credentials: 'include',
@@ -38,7 +68,7 @@ export default async function request(url, options) {
     }
   }
 
-  const resolvedUrl = combineURLs(baseURL, url);
+  const resolvedUrl = combineURLs(baseURL, buildURL(url, newOptions.params));
 
   const resp = await fetch(resolvedUrl, newOptions);
 

@@ -23,4 +23,18 @@ describe('request', () => {
       body,
     });
   });
+
+  it('should append params to url search', async () => {
+    const params = { foo: 'bar' };
+    global.fetch = jest.fn().mockImplementation(async (url) => {
+      const u = new URL(url);
+      expect(u.searchParams.get('foo')).toBe(params.foo);
+      return new Response();
+    });
+
+    await request('/', {
+      method: 'GET',
+      params,
+    });
+  });
 });
