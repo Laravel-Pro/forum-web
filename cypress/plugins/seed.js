@@ -31,9 +31,17 @@ seed(
       "testUser1",
       "lilf@135.com",
       "2020-02-01 14:33:22",
-      "some/user/avatar.jpg",
-      "some/user/avatar.jpg",
+      "default-avatar.png",
+      "default-avatar.png",
       "$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi"
     ]
   ]
 );
+
+seed('threads',
+  ['id', 'author_id', 'channel_id', 'title', 'body', 'rendered', 'replies_count', 'activity_at', 'created_at'],
+  [
+    [1, 1, 1, 'the first thread', '# the first thread', '<h1>the first thread</h1>', 0, '2020-02-01 15:00:00', '2020-02-01 15:00:00'],
+    [2, 1, 2, 'the second thread', '## the second thread', '<h2>the second thread</h2>', 0, '2020-02-01 16:00:00', '2020-02-01 15:00:00'],
+  ]
+)
