@@ -38,10 +38,18 @@ seed(
   ]
 );
 
+const threads = [
+  /*in Vim*/ [1, 1, 1, 'the thread in Vim', '# the first thread', '<h1>the first thread</h1>', 0, '2020-02-01 15:00:00', '2020-02-01 15:00:00'],
+  /*in idea*/ [2, 1, 2, 'thr thread in Idea', '## the second thread', '<h2>the second thread</h2>', 0, '2020-02-01 16:00:00', '2020-02-01 15:00:00'],
+];
+
+for (let i = 2; i < 80; i++) {
+  threads.push(
+    [i, 1, (i % 2) + 1, 'the example thread', '# the example thread', '<h1>the example thread</h1>', 0, '2020-02-01 15:00:00', '2020-02-01 15:00:00'],
+  )
+}
+
 seed('threads',
   ['id', 'author_id', 'channel_id', 'title', 'body', 'rendered', 'replies_count', 'activity_at', 'created_at'],
-  [
-    [1, 1, 1, 'the first thread', '# the first thread', '<h1>the first thread</h1>', 0, '2020-02-01 15:00:00', '2020-02-01 15:00:00'],
-    [2, 1, 2, 'the second thread', '## the second thread', '<h2>the second thread</h2>', 0, '2020-02-01 16:00:00', '2020-02-01 15:00:00'],
-  ]
+  threads,
 )

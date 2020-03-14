@@ -12,6 +12,11 @@ class Home extends Component {
     this.state = {
       channels: [],
       threads: [],
+      pagination: {
+        currentPage: 1,
+        perPage: 50,
+        total: 0,
+      },
     };
   }
 
@@ -38,18 +43,33 @@ class Home extends Component {
 
   fetchThreads = async () => {
     const { match: { params: { channel } } } = this.props;
+    const { pagination: { currentPage } } = this.state;
+
     const ch = channel !== 'all' ? channel : undefined;
-    const resp = await getThreads(ch);
-    const { data: threads } = resp;
-    this.setState({ threads });
+    const resp = await getThreads(currentPage, ch);
+    const { data: threads, pagination } = resp;
+    this.setState({ threads, pagination });
+  }
+
+  handlePageChange = (page) => {
+    const { pagination } = this.state;
+    this.setState({
+      pagination: { ...pagination, currentPage: page },
+    }, this.fetchThreads);
   }
 
   render() {
-    const { channels, threads } = this.state;
+    const { channels, threads, pagination } = this.state;
     return (
       <Container className="mt-2">
         <ChannelTab channels={channels} />
-        <ThreadList threads={threads} />
+        <ThreadList
+          threads={threads}
+          pagination={{
+            ...pagination,
+            onChange: this.handlePageChange,
+          }}
+        />
       </Container>
     );
   }
