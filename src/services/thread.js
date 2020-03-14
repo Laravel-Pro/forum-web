@@ -5,3 +5,7 @@ export async function getThreads(page, channel) {
     params: { page, channel },
   });
 }
+
+export async function getThread(id) {
+  return request(`/threads/${id}`);
+}

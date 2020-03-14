@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Badge, Media } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 export const ThreadPropTypes = PropTypes.shape({
   title: PropTypes.string.isRequired,
@@ -14,6 +15,7 @@ export const ThreadPropTypes = PropTypes.shape({
 
 function Thread({ thread }) {
   const {
+    id,
     author,
     channel,
     title,
@@ -31,7 +33,7 @@ function Thread({ thread }) {
       />
       <Media.Body className="d-flex">
         <div className="flex-fill">
-          <h5 className="thread-title">{title}</h5>
+          <h5 className="thread-title"><Link to={`/thread/${id}`}>{title}</Link></h5>
           <Badge variant="light" className="channel-name">{channel.name}</Badge>
           <span className="text-muted small">{`由 ${author.username} 发布于 ${createdAt}`}</span>
         </div>
