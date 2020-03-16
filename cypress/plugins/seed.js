@@ -1,4 +1,4 @@
-const seed = require("./dbSeeder");
+const seed = require('./dbSeeder');
 
 seed(
   "channels",
