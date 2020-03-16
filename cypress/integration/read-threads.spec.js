@@ -1,4 +1,4 @@
-describe('Threads', () => {
+describe('Read Threads', () => {
   it('should see thread list', () => {
     cy.visit('/channel/all');
 
