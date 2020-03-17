@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import { ChannelTab, ThreadList } from 'components';
 import {
   Button, Card, Container, Col, Row,
@@ -9,118 +8,79 @@ import { getChannels } from 'services/channel';
 import { getThreads } from 'services/thread';
 import UserContext from 'UserContext';
 
-class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      channels: [],
-      threads: [],
-      pagination: {
-        currentPage: 1,
-        perPage: 50,
-        total: 0,
-      },
-    };
-  }
+function ActionsCard() {
+  const { user } = useContext(UserContext);
+  const history = useHistory();
 
-  componentDidMount() {
-    this.fetchChannels()
-      .then(() => {
-        this.fetchThreads();
-      });
-  }
-
-  componentDidUpdate(prevProps) {
-    const { match: { params: { channel: oldChannel } } } = prevProps;
-    const { match: { params: { channel } } } = this.props;
-
-    if (oldChannel !== channel) {
-      this.fetchThreads();
-    }
-  }
-
-  fetchChannels = async () => {
-    const channels = await getChannels();
-    this.setState({ channels });
-  }
-
-  fetchThreads = async () => {
-    const { match: { params: { channel } } } = this.props;
-    const { pagination: { currentPage } } = this.state;
-
-    const ch = channel !== 'all' ? channel : undefined;
-    const resp = await getThreads(currentPage, ch);
-    const { data: threads, pagination } = resp;
-    this.setState({ threads, pagination });
-  }
-
-  handlePageChange = (page) => {
-    const { pagination } = this.state;
-    this.setState({
-      pagination: { ...pagination, currentPage: page },
-    }, this.fetchThreads);
-  }
-
-  handleNewThread = () => {
-    const { history } = this.props;
+  function handleNewThread() {
     history.push('/thread/new');
   }
 
-  postThreadRender = () => {
-    const { user } = this.context;
-    if (user.id) {
-      return (
-        <Card style={{ height: 140 }}>
-          <Card.Body>
-            <Button
-              variant="outline-dark"
-              block
-              onClick={this.handleNewThread}
-            >
-              发 帖
-            </Button>
-          </Card.Body>
-        </Card>
-      );
-    }
-    return null;
-  }
-
-  render() {
-    const { channels, threads, pagination } = this.state;
+  if (user.id) {
     return (
-      <Container className="mt-2">
-        <Row>
-          <Col lg={9}>
-            <ChannelTab channels={channels} />
-            <ThreadList
-              threads={threads}
-              pagination={{
-                ...pagination,
-                onChange: this.handlePageChange,
-              }}
-            />
-          </Col>
-          <Col lg={3}>
-            {this.postThreadRender()}
-          </Col>
-        </Row>
-      </Container>
+      <Card style={{ height: 140 }}>
+        <Card.Body>
+          <Button
+            variant="outline-dark"
+            block
+            onClick={handleNewThread}
+          >
+            发 帖
+          </Button>
+        </Card.Body>
+      </Card>
     );
   }
+  return null;
 }
 
-Home.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      channel: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-};
+function Home() {
+  const match = useRouteMatch('/channel/:channel');
+  const { params: { channel } } = match;
 
-Home.contextType = UserContext;
+  const [channels, setChannels] = useState([]);
+  const [threads, setThreads] = useState([]);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    perPage: 50,
+    total: 0,
+  });
 
-export default withRouter(Home);
+  useEffect(() => {
+    getChannels().then((ch) => {
+      setChannels(ch);
+    });
+  }, []);
+
+  useEffect(() => {
+    const ch = channel !== 'all' ? channel : undefined;
+    getThreads(pagination.currentPage, ch).then((resp) => {
+      setThreads(resp.data);
+      setPagination(resp.pagination);
+    });
+  }, [channel, pagination.currentPage]);
+
+  return (
+    <Container className="mt-2">
+      <Row>
+        <Col lg={9}>
+          <ChannelTab channels={channels} />
+          <ThreadList
+            threads={threads}
+            pagination={{
+              ...pagination,
+              onChange: (page) => {
+                setPagination({ ...pagination, currentPage: page });
+              },
+            }}
+          />
+        </Col>
+        <Col lg={3}>
+          <ActionsCard />
+        </Col>
+      </Row>
+    </Container>
+  );
+}
+
+export default Home;
