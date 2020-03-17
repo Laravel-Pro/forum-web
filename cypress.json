@@ -1,5 +1,7 @@
 {
   "watchForFileChanges": true,
   "baseUrl": "http://localhost:3000",
-  "video": false
+  "video": false,
+  "viewportHeight": 821,
+  "viewportWidth": 1536
 }
