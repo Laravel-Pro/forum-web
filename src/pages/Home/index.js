@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { ChannelTab, ThreadList } from 'components';
-import Container from 'react-bootstrap/Container';
+import {
+  Button, Card, Container, Col, Row,
+} from 'react-bootstrap';
 import { getChannels } from 'services/channel';
 import { getThreads } from 'services/thread';
+import UserContext from 'UserContext';
 
 class Home extends Component {
   constructor(props) {
@@ -58,18 +61,50 @@ class Home extends Component {
     }, this.fetchThreads);
   }
 
+  handleNewThread = () => {
+    const { history } = this.props;
+    history.push('/thread/new');
+  }
+
+  postThreadRender = () => {
+    const { user } = this.context;
+    if (user.id) {
+      return (
+        <Card style={{ height: 140 }}>
+          <Card.Body>
+            <Button
+              variant="outline-dark"
+              block
+              onClick={this.handleNewThread}
+            >
+              发 帖
+            </Button>
+          </Card.Body>
+        </Card>
+      );
+    }
+    return null;
+  }
+
   render() {
     const { channels, threads, pagination } = this.state;
     return (
       <Container className="mt-2">
-        <ChannelTab channels={channels} />
-        <ThreadList
-          threads={threads}
-          pagination={{
-            ...pagination,
-            onChange: this.handlePageChange,
-          }}
-        />
+        <Row>
+          <Col lg={9}>
+            <ChannelTab channels={channels} />
+            <ThreadList
+              threads={threads}
+              pagination={{
+                ...pagination,
+                onChange: this.handlePageChange,
+              }}
+            />
+          </Col>
+          <Col lg={3}>
+            {this.postThreadRender()}
+          </Col>
+        </Row>
       </Container>
     );
   }
@@ -81,6 +116,11 @@ Home.propTypes = {
       channel: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
+
+Home.contextType = UserContext;
 
 export default withRouter(Home);
