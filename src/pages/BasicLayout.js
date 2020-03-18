@@ -9,6 +9,7 @@ import Login from 'pages/Auth/Login';
 import { getDBStatus, getVersion } from 'services/status';
 import UserContext from 'UserContext';
 import Thread from 'pages/Thread';
+import NewThread from 'pages/Thread/NewThread';
 
 class BasicLayout extends Component {
   constructor(props) {
@@ -47,6 +48,9 @@ class BasicLayout extends Component {
           <Switch>
             <Route path="/channel/:channel">
               <Home />
+            </Route>
+            <Route path="/thread/new">
+              <NewThread />
             </Route>
             <Route path="/thread/:id">
               <Thread />
