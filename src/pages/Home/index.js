@@ -4,9 +4,9 @@ import { ChannelTab, ThreadList } from 'components';
 import {
   Button, Card, Container, Col, Row,
 } from 'react-bootstrap';
-import { getChannels } from 'services/channel';
 import { getThreads } from 'services/thread';
 import UserContext from 'UserContext';
+import ChannelContext from 'ChannelContext';
 
 function ActionsCard() {
   const { user } = useContext(UserContext);
@@ -35,22 +35,16 @@ function ActionsCard() {
 }
 
 function Home() {
+  const { channels } = useContext(ChannelContext);
   const match = useRouteMatch('/channel/:channel');
   const { params: { channel } } = match;
 
-  const [channels, setChannels] = useState([]);
   const [threads, setThreads] = useState([]);
   const [pagination, setPagination] = useState({
     currentPage: 1,
     perPage: 50,
     total: 0,
   });
-
-  useEffect(() => {
-    getChannels().then((ch) => {
-      setChannels(ch);
-    });
-  }, []);
 
   useEffect(() => {
     const ch = channel !== 'all' ? channel : undefined;
