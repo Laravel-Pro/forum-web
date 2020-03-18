@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Container,
@@ -28,6 +28,7 @@ const schema = yup.object({
 
 function NewThread() {
   const { channels } = useContext(ChannelContext);
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   const formik = useFormik({
@@ -38,6 +39,7 @@ function NewThread() {
     },
     validationSchema: schema,
     onSubmit: (values) => {
+      setLoading(true);
       const selectedChannel = channels.find((it) => it.slug === values.channel);
       postThread({ channel: selectedChannel.id, title: values.title, body: values.body })
         .then((resp) => {
@@ -45,6 +47,8 @@ function NewThread() {
           if (data.id) {
             history.push(`/thread/${data.id}`);
           }
+        }).finally(() => {
+          setLoading(false);
         });
     },
   });
@@ -101,7 +105,7 @@ function NewThread() {
           <FormControl.Feedback type="invalid">{errors.body}</FormControl.Feedback>
         </FormGroup>
         <FormGroup>
-          <Button type="submit">提 交</Button>
+          <Button type="submit" disabled={loading}>提 交</Button>
         </FormGroup>
       </Form>
     </Container>
