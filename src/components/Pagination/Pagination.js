@@ -6,6 +6,13 @@ export const PaginationPropTypes = PropTypes.shape({
   currentPage: PropTypes.number,
   perPage: PropTypes.number,
   total: PropTypes.number,
+  size: PropTypes.oneOf(['sm', 'lg']),
+  layout: PropTypes.shape({
+    first: PropTypes.bool,
+    prev: PropTypes.bool,
+    next: PropTypes.bool,
+    last: PropTypes.bool,
+  }),
   onChange: PropTypes.func,
 });
 
@@ -47,7 +54,18 @@ class CustomPagination extends React.PureComponent {
   }
 
   render() {
-    const { currentPage, perPage, total } = this.props;
+    const {
+      currentPage,
+      perPage,
+      total,
+      size,
+      layout: {
+        first,
+        prev,
+        next,
+        last,
+      },
+    } = this.props;
 
     const pages = Math.ceil(total / perPage);
 
@@ -99,14 +117,17 @@ class CustomPagination extends React.PureComponent {
       }
     }
 
+    const asFirst = currentPage === 1;
+    const asLast = !total || currentPage === pages;
+
     return (
       <div className="d-flex">
-        <Pagination className="justify-content-end flex-grow-1">
-          <Pagination.First disabled={currentPage === 1} onClick={this.first} />
-          <Pagination.Prev disabled={currentPage === 1} onClick={this.prev} />
+        <Pagination size={size} className="justify-content-end flex-grow-1">
+          {first ? <Pagination.First disabled={asFirst} onClick={this.first} /> : null}
+          {prev ? <Pagination.Prev disabled={asFirst} onClick={this.prev} /> : null}
           {pageList}
-          <Pagination.Next disabled={!total || currentPage === pages} onClick={this.next} />
-          <Pagination.Last disabled={!total || currentPage === pages} onClick={this.last} />
+          {next ? <Pagination.Next disabled={asLast} onClick={this.next} /> : null}
+          {last ? <Pagination.Last disabled={asLast} onClick={this.last} /> : null}
         </Pagination>
       </div>
     );
@@ -114,5 +135,14 @@ class CustomPagination extends React.PureComponent {
 }
 
 CustomPagination.propTypes = PaginationPropTypes.isRequired;
+
+CustomPagination.defaultProps = {
+  layout: {
+    first: true,
+    prev: true,
+    next: true,
+    last: true,
+  },
+};
 
 export default CustomPagination;
