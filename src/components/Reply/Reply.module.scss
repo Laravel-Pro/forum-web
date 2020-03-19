@@ -1,0 +1,6 @@
+.reply {
+  padding: 0.5rem;
+  & + .reply {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}

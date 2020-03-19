@@ -3,11 +3,20 @@ import { useRouteMatch } from 'react-router-dom';
 import { Badge, Container, Media } from 'react-bootstrap';
 import showdown from 'showdown';
 import { getThread } from 'services/thread';
+import { ReplyList } from 'components';
+import { getReplies, postReply } from 'services/reply';
 
 const converter = new showdown.Converter();
 
 function Thread() {
   const [thread, setThread] = useState(null);
+  const [replies, setReplies] = useState([]);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    perPage: 50,
+    total: 0,
+  });
+
   const { params: { id: threadId } } = useRouteMatch('/thread/:id');
 
   useEffect(() => {
@@ -19,9 +28,29 @@ function Thread() {
     fetchThreads();
   }, [threadId]);
 
+  useEffect(() => {
+    if (!thread || !thread.id) {
+      return;
+    }
+    const fetchReplies = async () => {
+      const resp = await getReplies(thread.id, pagination.currentPage);
+      setReplies(resp.data);
+      setPagination(resp.pagination);
+    };
+    fetchReplies();
+  }, [thread, pagination.currentPage]);
+
+  const handleReply = async ({ body }) => {
+    const { data } = await postReply(body, threadId);
+    if (data) {
+      window.location.reload();
+    }
+  };
+
   if (!thread) {
     return null;
   }
+
   const {
     title, html, channel, author, created_at: createdAt,
   } = thread;
@@ -47,6 +76,17 @@ function Thread() {
         </Media>
         {/* eslint-disable-next-line react/no-danger */}
         <div dangerouslySetInnerHTML={{ __html: html }} />
+        <hr />
+        <ReplyList
+          replies={replies}
+          onReply={handleReply}
+          pagination={{
+            ...pagination,
+            onChange: (page) => {
+              setPagination({ ...pagination, currentPage: page });
+            },
+          }}
+        />
       </div>
     </Container>
   );
