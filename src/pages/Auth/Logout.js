@@ -8,7 +8,6 @@ function Logout() {
   const [loggedOut, setLoggedOut] = useState(false);
 
   useEffect(() => {
-    console.log(user);
     async function doLogout() {
       const resp = await logout();
       if (resp.logout === true) {
