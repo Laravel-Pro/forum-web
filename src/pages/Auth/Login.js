@@ -1,15 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
-  Form,
-  FormGroup,
-  Row,
-  FormLabel,
-  Col,
-  FormControl,
-  Button,
+  Button, Card, Col, Form, FormControl, FormGroup, Row,
 } from 'react-bootstrap';
 import * as yup from 'yup';
-import { Formik } from 'formik';
+import { useFormik } from 'formik';
 import UserContext from 'UserContext';
 import { login } from 'services/auth';
 
@@ -20,68 +15,75 @@ const schema = yup.object({
 
 const { Feedback } = FormControl;
 
-class Login extends React.Component {
-  submit = async (values) => {
-    const { loginAs, password } = values;
-    const { updateUser } = this.context;
-    const resp = await login({ loginAs, password });
-    updateUser(resp);
-  };
+function LoginFrom() {
+  const { updateUser } = useContext(UserContext);
+  const history = useHistory();
 
-  renderLoginFrom = (props) => {
-    const {
-      handleSubmit, handleChange, values, touched, errors,
-    } = props;
-    return (
-      <Form noValidate onSubmit={handleSubmit}>
-        <FormGroup as={Row} controlId="loginAs">
-          <FormLabel column md={3}>
-            用启名
-          </FormLabel>
-          <Col>
-            <FormControl
-              type="text"
-              isInvalid={touched.loginAs && !!errors.loginAs}
-              value={values.loginAs}
-              onChange={handleChange}
-            />
-            <Feedback type="invalid">{errors.loginAs}</Feedback>
-          </Col>
-        </FormGroup>
-        <FormGroup as={Row} controlId="password">
-          <FormLabel column md={3}>
-            密码
-          </FormLabel>
-          <Col>
-            <FormControl
-              value={values.password}
-              onChange={handleChange}
-              type="text"
-            />
-          </Col>
-        </FormGroup>
-        <FormGroup as={Row}>
-          <Col>
-            <Button type="submit">提交</Button>
-          </Col>
-        </FormGroup>
-      </Form>
-    );
-  };
+  const formik = useFormik({
+    initialValues: {
+      channel: '',
+      title: '',
+      body: '',
+    },
+    validationSchema: schema,
+    onSubmit: (values) => {
+      const { loginAs, password } = values;
 
-  render() {
-    return (
-      <Formik
-        validationSchema={schema}
-        initialValues={{ loginAs: '', password: '' }}
-        onSubmit={this.submit}
-      >
-        {this.renderLoginFrom}
-      </Formik>
-    );
-  }
+      login({ loginAs, password }).then((user) => {
+        if (user.id) {
+          updateUser(user);
+          history.push('/');
+        }
+      });
+    },
+  });
+
+  const {
+    errors = {}, touched, handleChange, values,
+  } = formik;
+
+  return (
+    <Form noValidate onSubmit={formik.handleSubmit}>
+      <FormGroup controlId="loginAs">
+        <FormControl
+          placeholder="用户名"
+          type="text"
+          isInvalid={touched.loginAs && !!errors.loginAs}
+          value={values.loginAs}
+          onChange={handleChange}
+        />
+        <Feedback type="invalid">{errors.loginAs}</Feedback>
+      </FormGroup>
+      <FormGroup controlId="password">
+        <FormControl
+          placeholder="密码"
+          type="password"
+          value={values.password}
+          onChange={handleChange}
+          isInvalid={touched.password && !!errors.password}
+        />
+        <Feedback type="invalid">{errors.password}</Feedback>
+      </FormGroup>
+      <FormGroup>
+        <Button type="submit">提交</Button>
+      </FormGroup>
+    </Form>
+  );
 }
 
-Login.contextType = UserContext;
+function Login() {
+  return (
+    <Row>
+      <Col sm={12} md={10} lg={8} xl={4} className="m-auto" style={{ maxWidth: 400 }}>
+        <h2 className="m-4 text-center">登录</h2>
+        <Card className="shadow">
+          <Card.Body className="p-4">
+            <LoginFrom />
+          </Card.Body>
+        </Card>
+      </Col>
+    </Row>
+  );
+}
 
 export default Login;

@@ -14,8 +14,8 @@ Cypress.Commands.add('login', () => {
   cy.visit('/auth/login');
   cy.get('#loginAs').type('testUser1');
   cy.get('#password').type('password');
-  cy.get('button[type=submit]').click();
-  cy.get('.navbar').contains('testUser1');
+  cy.contains('提交').click();
+  cy.get('[data-test=profile]').contains('testUser1');
 });
 
 Cypress.Commands.add('logout', () => {

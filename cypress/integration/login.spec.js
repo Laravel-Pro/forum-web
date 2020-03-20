@@ -9,6 +9,6 @@ describe('Login in', () => {
     cy.get('#loginAs').type('testUser1');
     cy.get('#password').type('password');
     cy.get('button[type=submit]').click();
-    cy.get('.navbar').contains('testUser1');
+    cy.get('[data-test=profile]').contains('testUser1');
   });
 });
