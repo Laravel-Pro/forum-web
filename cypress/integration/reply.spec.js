@@ -14,7 +14,7 @@ describe('Reply', () => {
     cy.login();
     cy.visit('/thread/1');
 
-    cy.get('button[type=submit]').contains('评 论').should('exist');
+    cy.get('[data-test=submit]').should('exist');
   });
 
   it('should validate reply body', () => {
@@ -22,7 +22,7 @@ describe('Reply', () => {
 
     cy.get('button[type=submit]').click();
 
-    cy.get('.reply-list').contains('请输入评论内容').should('exist');
+    cy.contains('请输入评论内容').should('exist');
   });
 
   it('an authenticated user may reply a thread ', () => {
@@ -31,7 +31,7 @@ describe('Reply', () => {
     cy.get('h1').contains('the first thread');
 
     cy.get('textarea#body').type('这是一条测试评论');
-    cy.get('button[type=submit]').click();
+    cy.get('[data-test=submit]').click();
 
     cy.get('.reply-list').should('contain.text', '这是一条测试评论');
   });
