@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import {
+  BrowserRouter, Redirect, Route, Switch,
+} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import UserContext from 'UserContext';
 import ChannelContext from 'ChannelContext';
 import BasicLayout from 'pages/BasicLayout';
-import './theme.scss';
 import { getSelf } from 'services/user';
 import { getChannels } from 'services/channel';
+import { getDBStatus, getVersion } from 'services/status';
+import { Header, ProfileToggle } from 'components';
+import AuthLayout from 'pages/Auth/AuthLayout';
+import './theme.scss';
 
 function ChannelsProvider({ children }) {
   const { Provider } = ChannelContext;
@@ -25,6 +31,8 @@ ChannelsProvider.propTypes = {
 
 function App() {
   const [user, updateUser] = useState({});
+  const [version, setVersion] = useState('');
+  const [db, setDb] = useState('');
 
   useEffect(() => {
     getSelf().then((resp) => {
@@ -37,13 +45,41 @@ function App() {
         console.error(resp);
       }
     });
+
+    getVersion().then((resp) => {
+      setVersion(resp.version);
+    });
+
+    getDBStatus().then((resp) => {
+      setDb(resp.db);
+    });
   }, []);
 
   return (
     <UserContext.Provider value={{ user, updateUser }}>
       <ChannelsProvider>
-        <BasicLayout />
+        <BrowserRouter>
+          <Header
+            extra={<ProfileToggle user={user} />}
+          />
+
+          <Switch>
+            <Route path="/auth">
+              <AuthLayout />
+            </Route>
+            <Route path="/">
+              <BasicLayout />
+            </Route>
+
+            <Route path="*">
+              <Redirect to="/channel/all" />
+            </Route>
+          </Switch>
+        </BrowserRouter>
       </ChannelsProvider>
+      <footer className="text-muted fixed-bottom">
+        {`ver: ${version} | db: ${db}`}
+      </footer>
     </UserContext.Provider>
   );
 }
