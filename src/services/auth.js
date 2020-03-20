@@ -14,6 +14,7 @@ export async function registerUser({
     },
   });
 }
+
 export async function login({ loginAs = '', password = '' }) {
   return request('/auth/login', {
     method: 'POST',
@@ -21,5 +22,11 @@ export async function login({ loginAs = '', password = '' }) {
       loginAs,
       password,
     },
+  });
+}
+
+export async function logout() {
+  return request('/auth/logout', {
+    method: 'POST',
   });
 }

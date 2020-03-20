@@ -17,6 +17,13 @@ Cypress.Commands.add('login', () => {
   cy.get('button[type=submit]').click();
   cy.get('.navbar').contains('testUser1');
 });
+
+Cypress.Commands.add('logout', () => {
+  cy.visit('/auth/logout');
+  cy.contains('注册');
+  cy.contains('登录');
+});
+
 //
 //
 // -- This is a child command --

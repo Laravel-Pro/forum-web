@@ -10,6 +10,7 @@ import { getDBStatus, getVersion } from 'services/status';
 import UserContext from 'UserContext';
 import Thread from 'pages/Thread';
 import NewThread from 'pages/Thread/NewThread';
+import Logout from 'pages/Auth/Logout';
 
 class BasicLayout extends Component {
   constructor(props) {
@@ -60,6 +61,9 @@ class BasicLayout extends Component {
             </Route>
             <Route path="/auth/login">
               <Login />
+            </Route>
+            <Route path="/auth/logout">
+              <Logout />
             </Route>
             <Route path="*">
               <Redirect to="/channel/all" />
