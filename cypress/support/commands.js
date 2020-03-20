@@ -20,6 +20,9 @@ Cypress.Commands.add('login', () => {
 
 Cypress.Commands.add('logout', () => {
   cy.visit('/auth/logout');
+  cy.location().should((loc) => {
+    expect(loc.pathname).to.eq('/channel/all');
+  });
   cy.contains('注册');
   cy.contains('登录');
 });

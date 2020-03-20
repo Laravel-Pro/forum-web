@@ -1,9 +1,10 @@
 describe('Reply', () => {
   beforeEach(() => {
-    Cypress.Cookies.preserveOnce('larapro_session', 'remember_token');
+    cy.login();
   });
 
   it('a guest can not see reply form', () => {
+    cy.logout();
     cy.visit('/thread/1');
     cy.get('h1').contains('the first thread');
 
@@ -11,7 +12,6 @@ describe('Reply', () => {
   });
 
   it('an authenticated user can see reply form', () => {
-    cy.login();
     cy.visit('/thread/1');
 
     cy.get('[data-test=submit]').should('exist');
