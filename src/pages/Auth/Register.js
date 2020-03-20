@@ -143,7 +143,7 @@ class Register extends Component {
         </FormGroup>
         <FormGroup as={Row}>
           <Col md={{ span: 9, offset: 3 }}>
-            <Button type="submit">提 交</Button>
+            <Button type="submit">提交</Button>
           </Col>
         </FormGroup>
       </Form>

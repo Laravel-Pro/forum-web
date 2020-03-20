@@ -6,7 +6,7 @@ describe('Post Thread', () => {
   it('an authenticated user can see post new thread button', () => {
     cy.visit('/channel/all');
 
-    cy.contains('发 帖')
+    cy.contains('发帖')
       .click();
 
     cy.location().should((loc) => {

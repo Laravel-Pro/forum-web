@@ -32,8 +32,8 @@ describe('Register new user', () => {
     cy.get('#email').type(`${testUsername}@laravel.pro`);
     cy.get('#password').type('password');
     cy.get('#confirm_password').type('password');
-    cy.get('button[type=submit]').click();
-    cy.get('nav').contains(testUsername);
+    cy.contains('提交').click();
+    cy.get('[data-test=profile]').contains(testUsername);
   });
 
   it('should register fail when username and email exists', () => {
@@ -41,7 +41,7 @@ describe('Register new user', () => {
     cy.get('#email').type(`${testUsername}@laravel.pro`);
     cy.get('#password').type('password2');
     cy.get('#confirm_password').type('password2');
-    cy.get('button[type=submit]').click();
+    cy.contains('提交').click();
     cy.contains('用户名已被使用');
     cy.contains('邮箱已被使用');
   });
