@@ -53,6 +53,7 @@ function ReplyList(props) {
           next: false,
           last: false,
         }}
+        size="sm"
         onChange={pagination.onChange}
       />
       <hr />
