@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import { Badge, Container, Media } from 'react-bootstrap';
 import showdown from 'showdown';
+import UserContext from 'UserContext';
 import { getThread } from 'services/thread';
 import { ReplyList } from 'components';
 import { getReplies, postReply } from 'services/reply';
@@ -18,6 +19,8 @@ function Thread() {
   });
 
   const { params: { id: threadId } } = useRouteMatch('/thread/:id');
+
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const fetchThreads = async () => {
@@ -86,6 +89,7 @@ function Thread() {
               setPagination({ ...pagination, currentPage: page });
             },
           }}
+          canReply={!!user.id}
         />
       </div>
     </Container>

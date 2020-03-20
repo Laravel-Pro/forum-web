@@ -9,7 +9,12 @@ import Pagination, { PaginationPropTypes } from 'components/Pagination/Paginatio
 import Reply from './Reply';
 
 function ReplyList(props) {
-  const { replies = [], onReply, pagination } = props;
+  const {
+    replies = [],
+    onReply,
+    pagination,
+    canReply,
+  } = props;
 
   const formik = useFormik({
     initialValues: {
@@ -51,22 +56,24 @@ function ReplyList(props) {
         onChange={pagination.onChange}
       />
       <hr />
-      <Form className="reply-form" onSubmit={formik.handleSubmit}>
-        <FormGroup controlId="body">
-          <FormControl
-            as="textarea"
-            rows="2"
-            placeholder="评论"
-            onChange={formik.handleChange}
-            value={formik.values.body}
-            isInvalid={formik.errors.body}
-          />
-          <FormControl.Feedback type="invalid">{formik.errors.body}</FormControl.Feedback>
-        </FormGroup>
-        <FormGroup>
-          <Button type="submit">评 论</Button>
-        </FormGroup>
-      </Form>
+      {canReply ? (
+        <Form className="reply-form" onSubmit={formik.handleSubmit}>
+          <FormGroup controlId="body">
+            <FormControl
+              as="textarea"
+              rows="2"
+              placeholder="评论"
+              onChange={formik.handleChange}
+              value={formik.values.body}
+              isInvalid={formik.errors.body}
+            />
+            <FormControl.Feedback type="invalid">{formik.errors.body}</FormControl.Feedback>
+          </FormGroup>
+          <FormGroup>
+            <Button type="submit" data-test="submit">评论</Button>
+          </FormGroup>
+        </Form>
+      ) : null}
     </div>
   );
 }
@@ -75,6 +82,7 @@ ReplyList.propTypes = {
   replies: PropTypes.arrayOf(PropTypes.object),
   onReply: PropTypes.func,
   pagination: PaginationPropTypes,
+  canReply: PropTypes.bool,
 };
 
 ReplyList.defaultProps = {
@@ -86,6 +94,7 @@ ReplyList.defaultProps = {
     perPage: 50,
     total: 0,
   },
+  canReply: false,
 };
 
 export default ReplyList;
