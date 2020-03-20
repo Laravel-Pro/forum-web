@@ -21,20 +21,27 @@ function LoginFrom() {
 
   const formik = useFormik({
     initialValues: {
-      channel: '',
-      title: '',
-      body: '',
+      loginAs: '',
+      password: '',
     },
     validationSchema: schema,
     onSubmit: (values) => {
       const { loginAs, password } = values;
 
-      login({ loginAs, password }).then((user) => {
-        if (user.id) {
-          updateUser(user);
-          history.push('/');
-        }
-      });
+      login({ loginAs, password })
+        .then((user) => {
+          if (user.id) {
+            updateUser(user);
+            history.push('/');
+          }
+        })
+        .catch((resp) => {
+          if (resp.status === 422) {
+            const { body: { errors } } = resp;
+            const { username = [] } = errors;
+            formik.setFieldError('loginAs', username.join('、'));
+          }
+        });
     },
   });
 
