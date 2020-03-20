@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import {
-  BrowserRouter, Redirect, Route, Switch,
+  BrowserRouter, Redirect, Route, Switch, useHistory,
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
 import UserContext from 'UserContext';
 import ChannelContext from 'ChannelContext';
 import BasicLayout from 'pages/BasicLayout';
 import { getSelf } from 'services/user';
 import { getChannels } from 'services/channel';
 import { getDBStatus, getVersion } from 'services/status';
-import { Header, ProfileToggle } from 'components';
+import { Header } from 'components';
 import AuthLayout from 'pages/Auth/AuthLayout';
 import './theme.scss';
 
@@ -27,6 +28,17 @@ function ChannelsProvider({ children }) {
 
 ChannelsProvider.propTypes = {
   children: PropTypes.element.isRequired,
+};
+
+function LogoutButton({ loggedIn }) {
+  const history = useHistory();
+  return loggedIn ? (
+    <Button variant="light" onClick={() => history.push('/auth/logout')}>登出</Button>
+  ) : null;
+}
+
+LogoutButton.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
 };
 
 function App() {
@@ -60,7 +72,7 @@ function App() {
       <ChannelsProvider>
         <BrowserRouter>
           <Header
-            extra={<ProfileToggle user={user} />}
+            extra={<LogoutButton loggedIn={!!user.id} />}
           />
 
           <Switch>
