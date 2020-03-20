@@ -18,7 +18,7 @@ function Logout() {
     if (user.id) {
       doLogout();
     }
-  }, [user]);
+  }, [updateUser, user]);
 
   if (loggedOut) {
     return <Redirect to="/" />;
