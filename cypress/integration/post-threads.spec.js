@@ -1,13 +1,9 @@
 describe('Post Thread', () => {
-  before(() => {
+  beforeEach(() => {
     cy.login();
   });
 
-  beforeEach(() => {
-    Cypress.Cookies.preserveOnce('larapro_session', 'remember_token');
-  });
-
-  it('authorized user should see post new thread button', () => {
+  it('an authenticated user can see post new thread button', () => {
     cy.visit('/channel/all');
 
     cy.contains('发 帖')
@@ -28,7 +24,7 @@ describe('Post Thread', () => {
     cy.get('form').contains('请输入正文').should('exist');
   });
 
-  it('authorized user could post new thread', () => {
+  it('an authenticated user could post new thread', () => {
     cy.visit('/thread/new');
 
     cy.contains('选择频道').click();
