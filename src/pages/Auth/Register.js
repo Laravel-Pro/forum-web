@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import {
-  Button, Col, Form, FormControl,
-  FormGroup, FormLabel, Row,
+  Button, Card, Col, Form, FormControl,
+  FormGroup, Row,
 } from 'react-bootstrap';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import { registerUser } from 'services/auth';
 import UserContext from 'UserContext';
-import styles from './Register.module.scss';
 
 const schema = yup.object({
   username: yup.string()
@@ -89,62 +88,48 @@ class Register extends Component {
 
     return (
       <Form noValidate onSubmit={handleSubmit}>
-        <FormGroup as={Row} controlId="username">
-          <FormLabel column md={3}>用户名</FormLabel>
-          <Col md={9}>
-            <FormControl
-              type="text"
-              placeholder="请输入用户名"
-              value={values.username}
-              onChange={handleChange}
-              isInvalid={usernameInvalid}
-            />
-            <Feedback type="invalid">{usernameErrors}</Feedback>
-          </Col>
+        <FormGroup controlId="username">
+          <FormControl
+            type="text"
+            placeholder="请输入用户名"
+            value={values.username}
+            onChange={handleChange}
+            isInvalid={usernameInvalid}
+          />
+          <Feedback type="invalid">{usernameErrors}</Feedback>
         </FormGroup>
-        <FormGroup as={Row} controlId="email">
-          <FormLabel column md={3}>邮箱</FormLabel>
-          <Col md={9}>
-            <FormControl
-              type="email"
-              placeholder="请输入邮箱"
-              value={values.email}
-              onChange={handleChange}
-              isInvalid={emailInvalid}
-            />
-            <Feedback type="invalid">{emailErrors}</Feedback>
-          </Col>
+        <FormGroup controlId="email">
+          <FormControl
+            type="email"
+            placeholder="请输入邮箱"
+            value={values.email}
+            onChange={handleChange}
+            isInvalid={emailInvalid}
+          />
+          <Feedback type="invalid">{emailErrors}</Feedback>
         </FormGroup>
-        <FormGroup as={Row} controlId="password">
-          <FormLabel column md={3}>密码</FormLabel>
-          <Col md={9}>
-            <FormControl
-              type="password"
-              placeholder="请输入密码"
-              value={values.password}
-              onChange={handleChange}
-              isInvalid={touched.password && !!errors.password}
-            />
-            <Feedback type="invalid">{errors.password}</Feedback>
-          </Col>
+        <FormGroup controlId="password">
+          <FormControl
+            type="password"
+            placeholder="请输入密码"
+            value={values.password}
+            onChange={handleChange}
+            isInvalid={touched.password && !!errors.password}
+          />
+          <Feedback type="invalid">{errors.password}</Feedback>
         </FormGroup>
-        <FormGroup as={Row} controlId="confirm_password">
-          <FormLabel column md={3}>确认密码</FormLabel>
-          <Col md={9}>
-            <FormControl
-              type="password"
-              placeholder="请确认密码"
-              value={values.confirm_password}
-              onChange={handleChange}
-              isInvalid={touched.confirm_password && !!errors.confirm_password}
-            />
-            <Feedback type="invalid">{errors.confirm_password}</Feedback>
-          </Col>
+        <FormGroup controlId="confirm_password">
+          <FormControl
+            type="password"
+            placeholder="请确认密码"
+            value={values.confirm_password}
+            onChange={handleChange}
+            isInvalid={touched.confirm_password && !!errors.confirm_password}
+          />
+          <Feedback type="invalid">{errors.confirm_password}</Feedback>
         </FormGroup>
-        <FormGroup as={Row}>
-          <Col md={{ span: 9, offset: 3 }}>
-            <Button type="submit">提交</Button>
-          </Col>
+        <FormGroup>
+          <Button type="submit">提交</Button>
         </FormGroup>
       </Form>
     );
@@ -161,18 +146,22 @@ class Register extends Component {
       );
     }
     return (
-      <div>
-        <h2 className="m-4" style={{ textAlign: 'center' }}>新用户注册</h2>
-        <div className={styles.formRegister}>
-          <Formik
-            validationSchema={schema}
-            onSubmit={this.submit}
-            initialValues={form}
-          >
-            {this.renderRegisterForm}
-          </Formik>
-        </div>
-      </div>
+      <Row>
+        <Col sm={12} md={10} lg={8} xl={4} className="m-auto" style={{ maxWidth: 400 }}>
+          <h2 className="m-4 text-center">新用户注册</h2>
+          <Card className="shadow">
+            <Card.Body className="p-4">
+              <Formik
+                validationSchema={schema}
+                onSubmit={this.submit}
+                initialValues={form}
+              >
+                {this.renderRegisterForm}
+              </Formik>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
     );
   }
 }

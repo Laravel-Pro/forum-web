@@ -5,11 +5,8 @@ describe('Register new user', () => {
     cy.visit('/auth/register');
   });
 
-  it('Visit register page', () => {
-    cy.contains('用户名');
-    cy.contains('邮箱');
-    cy.contains('密码');
-    cy.contains('确认密码');
+  it('an guest can visit register page', () => {
+    cy.contains('新用户注册');
   });
 
   it('should validate form input', () => {
