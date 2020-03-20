@@ -14,7 +14,7 @@ export default function ProfileCard() {
   const loggedIn = !!user.id;
 
   return (
-    <Card data-test="profile">
+    <Card data-test="profile" className="shadow-sm">
       <Card.Body>
         {
           loggedIn ? (
